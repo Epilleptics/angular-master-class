@@ -7,14 +7,8 @@ import { Observable } from "rxjs/Observable";
   templateUrl: './contact-detail.component.html',
   styleUrls: ['./contact-detail.component.css']
 })
-export class ContactDetailComponent implements OnInit {
-
-  @Input() contact$: Observable<Contact>;
+export class ContactDetailComponent {
+  @Input() contact: Contact;
   @Output() edit: EventEmitter<void> = new EventEmitter<void>();
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

@@ -4,6 +4,9 @@ import { ContactsService } from "../contacts.service";
 import { Contact } from "../models/contact";
 import { Location } from "@angular/common";
 import { Observable } from "rxjs/Observable";
+import { ApplicationState } from "../state-management/index";
+import { Store } from "@ngrx/store";
+import { EditContactAction, SelectContactAction } from "../state-management/contacts/contacts.actions";
 
 @Component({
   selector: 'trm-contact-editor',
@@ -17,18 +20,33 @@ export class ContactEditorComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private contactsService: ContactsService,
-    private location: Location) { }
+    private location: Location,
+    private store: Store<ApplicationState>) {
+  }
 
   private back() {
     this.location.back();
   }
 
   public ngOnInit() {
-    let id = this.route.snapshot.paramMap.get('id');
-    this.contact$ = this.contactsService.getContact(id);
+    let id = parseInt(this.route.snapshot.paramMap.get('id'));
+    this.contact$ = this.store.select(state => {
+      let selectedId = state.contacts.selectedContactId;
+      console.log(state.contacts.list);
+      let contact = state.contacts.list.find(c => c.id == selectedId);
+      return Object.assign({}, contact);
+    });
+    this.store.dispatch(
+      new SelectContactAction(id)
+    );
   }
 
   public save(contact: Contact) {
-    this.contactsService.updateContact(contact).subscribe(() => this.back());
+    this.contactsService.updateContact(contact).subscribe(_ => {
+      this.store.dispatch(
+        new EditContactAction(contact)
+      );
+      this.back();
+    });
   }
 }

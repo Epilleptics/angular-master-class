@@ -27,9 +27,8 @@ export class ContactsListComponent implements OnInit {
     private store: Store<ApplicationState>) {}
 
   public ngOnInit(): void {
-    let query = (state: ApplicationState) => state.contacts.list;
-    this.contacts$ = this.store.select(query);
-    
+    this.contacts$ = this.store.select(state => state.contacts.list);
+
     const terms$ = this.terms$
                       .debounceTime(400)
                       .distinctUntilChanged()

@@ -18,10 +18,12 @@ import { ContactEditorComponent } from './contact-editor/contact-editor.componen
 import { ContactDetailViewComponent } from './contact-detail-view/contact-detail-view.component';
 import { StoreModule } from "@ngrx/store";
 import { ROOT_REDUCER } from "./state-management/index";
+import { ContactExistsGuard } from "./contact-exists.guard";
 
 @NgModule({
   providers: [
     ContactsService,
+    ContactExistsGuard,
     {provide: API_ENDPOINT, useValue: 'http://localhost:4201'},
     {provide: API_CONTACTS, useValue: '/api/contacts'},
     {provide: API_CONTACT, useValue: '/api/contacts/'},
