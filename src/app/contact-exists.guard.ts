@@ -10,6 +10,7 @@ import 'rxjs/add/operator/switchMap';
 import { Contact } from "./models/contact";
 import "rxjs/add/observable/of";
 import "rxjs/add/operator/do";
+import { ContactsQuery } from "./state-management/contacts/contacts.reducer";
 
 @Injectable()
 export class ContactExistsGuard implements CanActivate {
@@ -33,6 +34,6 @@ export class ContactExistsGuard implements CanActivate {
     let contactId = parseInt(next.paramMap.get('id'));
     this.store.dispatch(new SelectContactAction(contactId));
 
-    return this.store.select(state => state.contacts.loaded).take(1).switchMap(resolveOrAddContactToList);
+    return this.store.select(ContactsQuery.getLoaded).take(1).switchMap(resolveOrAddContactToList);
   }
 }

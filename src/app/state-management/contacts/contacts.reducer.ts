@@ -3,6 +3,8 @@ import {
   AddContactAction, ContactsActions, ContactsActionTypes, EditContactAction, LoadContactsSuccessAction,
   SelectContactAction
 } from "./contacts.actions";
+import { ApplicationState } from "../index";
+import { createSelector } from "@ngrx/store";
 
 export interface ContactsState {
   list: Array<Contact>;
@@ -44,4 +46,13 @@ export function contactsReducer(state: ContactsState = INITIAL_STATE, action: Co
     }
   }
   return state;
+}
+
+export namespace ContactsQuery {
+  export const getContacts = state => state.contacts.list;
+  export const getLoaded = state => state.contacts.loaded;
+  export const getSelectedContact = createSelector(getContacts, getLoaded, (contacts: Array<Contact>, selectedContactId: number) => {
+      let contact = contacts.find(c => c.id == selectedContactId);
+      return Object.assign({}, contact);
+  });
 }

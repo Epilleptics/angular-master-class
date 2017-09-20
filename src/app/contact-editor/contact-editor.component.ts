@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 import { ApplicationState } from "../state-management/index";
 import { Store } from "@ngrx/store";
 import { EditContactAction, SelectContactAction } from "../state-management/contacts/contacts.actions";
+import { ContactsQuery } from "../state-management/contacts/contacts.reducer";
 
 @Component({
   selector: 'trm-contact-editor',
@@ -30,12 +31,7 @@ export class ContactEditorComponent implements OnInit {
 
   public ngOnInit() {
     let id = parseInt(this.route.snapshot.paramMap.get('id'));
-    this.contact$ = this.store.select(state => {
-      let selectedId = state.contacts.selectedContactId;
-      console.log(state.contacts.list);
-      let contact = state.contacts.list.find(c => c.id == selectedId);
-      return Object.assign({}, contact);
-    });
+    this.contact$ = this.store.select(ContactsQuery.getSelectedContact);
     this.store.dispatch(
       new SelectContactAction(id)
     );

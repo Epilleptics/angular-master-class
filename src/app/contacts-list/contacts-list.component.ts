@@ -12,6 +12,7 @@ import "rxjs/add/operator/delay";
 import { ApplicationState } from "../state-management/index";
 import { Store } from "@ngrx/store";
 import { LoadContactsSuccessAction } from "app/state-management/contacts/contacts.actions";
+import { ContactsQuery } from "../state-management/contacts/contacts.reducer";
 
 @Component({
   selector: 'trm-contacts-list',
@@ -27,7 +28,7 @@ export class ContactsListComponent implements OnInit {
     private store: Store<ApplicationState>) {}
 
   public ngOnInit(): void {
-    this.contacts$ = this.store.select(state => state.contacts.list);
+    this.contacts$ = this.store.select(ContactsQuery.getContacts);
 
     const terms$ = this.terms$
                       .debounceTime(400)

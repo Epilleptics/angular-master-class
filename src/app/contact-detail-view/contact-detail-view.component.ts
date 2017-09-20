@@ -7,6 +7,7 @@ import { Location } from "@angular/common";
 import { ApplicationState } from "../state-management/index";
 import { Store } from "@ngrx/store";
 import { SelectContactAction } from "../state-management/contacts/contacts.actions";
+import { ContactsQuery } from "../state-management/contacts/contacts.reducer";
 
 @Component({
   selector: 'trm-contact-detail-view',
@@ -30,12 +31,7 @@ export class ContactDetailViewComponent implements OnInit {
       new SelectContactAction(id)
     );
 
-    this.contact$ = this.store.select(state => {
-      let selectedId = state.contacts.selectedContactId;
-      let contact = state.contacts.list.find(c => c.id == selectedId);
-      return Object.assign({}, contact);
-    });
-
+    this.contact$ = this.store.select(ContactsQuery.getSelectedContact);
   }
 
   public edit() {
