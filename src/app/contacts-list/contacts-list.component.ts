@@ -9,8 +9,9 @@ import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/delay";
-import { EventBusService } from "../event-bus.service";
-import { APP_TITLE_CHANGE } from "../app.events";
+import { ApplicationState } from "../state-management/index";
+import { Store } from "@ngrx/store";
+import { LoadContactsSuccessAction } from "app/state-management/contacts/contacts.actions";
 
 @Component({
   selector: 'trm-contacts-list',
@@ -21,10 +22,14 @@ export class ContactsListComponent implements OnInit {
   public contacts$: Observable<Array<Contact>>;
   public terms$: Subject<string> = new Subject<string>();
 
-  constructor(private contactService: ContactsService, private eventBusService: EventBusService) {}
+  constructor(
+    private contactService: ContactsService,
+    private store: Store<ApplicationState>) {}
 
   public ngOnInit(): void {
-    this.eventBusService.emit(APP_TITLE_CHANGE, 'CONTACTS');
+    let query = (state: ApplicationState) => state.contacts.list;
+    this.contacts$ = this.store.select(query);
+    
     const terms$ = this.terms$
                       .debounceTime(400)
                       .distinctUntilChanged()
@@ -32,7 +37,11 @@ export class ContactsListComponent implements OnInit {
     const initial$ = this.contactService.getContacs()
                         .takeUntil(this.terms$);
 
-    this.contacts$ = Observable.merge(terms$, initial$);
+    Observable.merge(terms$, initial$).subscribe((contacts) => {
+      this.store.dispatch(
+        new LoadContactsSuccessAction(contacts)
+      );
+    })
   }
 
   public trackByContactId(index: number, item: Contact): number|string {

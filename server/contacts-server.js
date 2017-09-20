@@ -65,9 +65,7 @@ app.get('/', (req, res) =>{
  * getContacts() RESTful endpoint
  */
 app.get('/api/contacts', function (req, res) {
-  setTimeout(() => {
-    res.json(multipleResponse(db));
-  }, 500);
+  res.json(multipleResponse(db));
 });
 
 let delayedRequest = false;
@@ -82,7 +80,7 @@ app.get('/api/search', function (req, res) {
 
   if (unorderedResponse && delayedRequest) {
     console.log(`Serving delayed for: ${text}`);
-    setTimeout(() => res.json(multipleResponse(matches)), 2000)
+    res.json(multipleResponse(matches));
   } else {
     console.log(`Serving instantly for: ${text}`);
     res.json(multipleResponse(matches));

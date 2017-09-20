@@ -4,8 +4,6 @@ import { Contact } from "../models/contact";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContactsService } from "../contacts.service";
 import { Location } from "@angular/common";
-import { EventBusService } from "../event-bus.service";
-import { APP_TITLE_CHANGE } from "../app.events";
 
 @Component({
   selector: 'trm-contact-detail-view',
@@ -20,15 +18,11 @@ export class ContactDetailViewComponent implements OnInit {
     private route: ActivatedRoute,
     private contactsService: ContactsService,
     private router: Router,
-    private location: Location,
-    private eventBusService: EventBusService) { }
+    private location: Location) { }
 
   public ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
-    this.contact$ = this.contactsService.getContact(id).map((contact) => {
-      this.eventBusService.emit(APP_TITLE_CHANGE, contact.name.toUpperCase());
-      return contact;
-    });
+    this.contact$ = this.contactsService.getContact(id);
   }
 
   public edit() {

@@ -7,8 +7,6 @@
     </md-card-title-group>
     <md-card-content>
       <div fxLayout="column">
-        <trm-tabs>
-          <trm-tab title="General" fxLayout="column">
             <md-input-container fxFlex>
               <input mdInput [(ngModel)]="contact.name" placeholder="Name" name="name">
             </md-input-container>
@@ -24,8 +22,6 @@
             <md-input-container fxFlex>
               <input mdInput [(ngModel)]="contact.birthday" placeholder="Birthday" name="birthday" type="date">
             </md-input-container>
-          </trm-tab>
-          <trm-tab title="Address" fxLayout="column">
             <fieldset fxLayout="column">
               <legend>Address</legend>
               <md-input-container fxFlex>
@@ -38,8 +34,6 @@
                 <input mdInput [(ngModel)]="contact.address.city" placeholder="City" name="city">
               </md-input-container>
             </fieldset>
-          </trm-tab>
-        </trm-tabs>
       </div>
     </md-card-content>
     <md-card-actions fxLayout fxLayoutAlign="center center">

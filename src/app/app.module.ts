@@ -16,20 +16,18 @@ import { ContactsListComponent } from './contacts-list/contacts-list.component';
 import { ContactDetailComponent } from './contact-detail/contact-detail.component';
 import { ContactEditorComponent } from './contact-editor/contact-editor.component';
 import { ContactDetailViewComponent } from './contact-detail-view/contact-detail-view.component';
-import { TabsComponent } from './tabs/tabs.component';
-import { TabComponent } from './tab/tab.component';
-import { EventBusService } from "./event-bus.service";
+import { StoreModule } from "@ngrx/store";
+import { ROOT_REDUCER } from "./state-management/index";
 
 @NgModule({
   providers: [
     ContactsService,
-    EventBusService,
     {provide: API_ENDPOINT, useValue: 'http://localhost:4201'},
     {provide: API_CONTACTS, useValue: '/api/contacts'},
     {provide: API_CONTACT, useValue: '/api/contacts/'},
     {provide: API_SEARCH_CONTACS, useValue: '/api/search'},
   ],
-  declarations: [ContactsAppComponent, ContactsListComponent, ContactDetailComponent, ContactEditorComponent, ContactDetailViewComponent, TabsComponent, TabComponent],
+  declarations: [ContactsAppComponent, ContactsListComponent, ContactDetailComponent, ContactEditorComponent, ContactDetailViewComponent],
   imports: [
     RouterModule.forRoot(APP_ROUTES),
     FormsModule,
@@ -37,7 +35,8 @@ import { EventBusService } from "./event-bus.service";
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    StoreModule.forRoot(ROOT_REDUCER)
   ],
   bootstrap: [ContactsAppComponent]
 })
