@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
-import { AppStore } from '../store/app-store';
+import { Component, Inject } from '@angular/core';
+import { APP_STORE } from "../app-tokens";
+import { ApplicationState } from "../store/root-reducer";
+import { Store } from "redux";
+import { VoteActions } from "../store/votes/vote-actions";
 
 @Component({
   selector: 'trm-voter',
   template: `
     <div fxLayout="column" fxLayoutAlign="space-between center" fxFlex style="padding-left:10px;">
-      <button md-fab class="yes" mdTooltip="Vote Yes!">
+      <button md-fab class="yes" mdTooltip="Vote Yes!" (click)="increment()">
         <md-icon class="md-24">thumb_up</md-icon>
       </button>
 
       <ng-content></ng-content>
 
-      <button md-fab class="no" mdTooltip="Vote No!">
+      <button md-fab class="no" mdTooltip="Vote No!" (click)="decrement()">
         <md-icon class="md-24">thumb_down</md-icon>
       </button>
     </div>
@@ -26,14 +29,14 @@ export class VoterComponent {
   /**
    * Inject the appstore
    */
-  constructor(private store: AppStore) { }
+  constructor(@Inject(APP_STORE) private store: Store<ApplicationState>) { }
 
   private increment() {
-    // @Todo - dispatch action to the store
+    this.store.dispatch({type: VoteActions.YES});
   }
 
   private decrement() {
-    // @Todo - dispatch action to the store
+    this.store.dispatch({type: VoteActions.NO});
   }
 }
 
