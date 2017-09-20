@@ -25,8 +25,8 @@ export function contactsReducer(state: ContactsState = INITIAL_STATE, action: Co
       return {...state, selectedContactId: action.payload};
     }
     if (action.is<AddContactAction>(ContactsActionTypes.ADD_CONTACT)) {
-      let findInList = (found, contact) => {
-        return found || contact.id == action.payload.id;
+      let findInList = (contact) => {
+        return contact.id == action.payload.id;
       };
       let inStore = state.list.some(findInList);
 
