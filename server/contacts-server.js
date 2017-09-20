@@ -65,7 +65,9 @@ app.get('/', (req, res) =>{
  * getContacts() RESTful endpoint
  */
 app.get('/api/contacts', function (req, res) {
-  res.json(multipleResponse(db));
+  setTimeout(() => {
+    res.json(multipleResponse(db));
+  }, 500);
 });
 
 let delayedRequest = false;
@@ -93,7 +95,9 @@ app.get('/api/search', function (req, res) {
  */
 app.get('/api/contacts/:id', function (req, res) {
   let contact = db.find(contact => contact.id == req.params.id);
-  contact ? res.json(singleResponse(contact)) : res.status(404).json({ error: 'contact not found' });
+  setTimeout(() => {
+    contact ? res.json(singleResponse(contact)) : res.status(404).json({ error: 'contact not found' });
+  }, 500);
 });
 
 /**
